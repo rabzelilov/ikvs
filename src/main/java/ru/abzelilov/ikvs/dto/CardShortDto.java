@@ -14,6 +14,10 @@ public class CardShortDto {
     @Schema(description = "Идентификатор штамма")
     private Long id;
 
+    /** Идентификатор штамма */
+    @Schema(description = "Идентификатор штамма")
+    private Long idStrain;
+
     /** Видовое название */
     @Schema(description = "Видовое название")
     private String kind;

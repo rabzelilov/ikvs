@@ -9,14 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ru.abzelilov.ikvs.model.user.Permission.ADMIN_CREATE;
-import static ru.abzelilov.ikvs.model.user.Permission.ADMIN_DELETE;
-import static ru.abzelilov.ikvs.model.user.Permission.ADMIN_READ;
-import static ru.abzelilov.ikvs.model.user.Permission.ADMIN_UPDATE;
-import static ru.abzelilov.ikvs.model.user.Permission.MANAGER_CREATE;
-import static ru.abzelilov.ikvs.model.user.Permission.MANAGER_DELETE;
-import static ru.abzelilov.ikvs.model.user.Permission.MANAGER_READ;
-import static ru.abzelilov.ikvs.model.user.Permission.MANAGER_UPDATE;
+import static ru.abzelilov.ikvs.model.user.Permission.*;
 
 @RequiredArgsConstructor
 public enum Role {
@@ -41,9 +34,7 @@ public enum Role {
                     MANAGER_DELETE,
                     MANAGER_CREATE
             )
-    )
-
-    ;
+    );
 
     @Getter
     private final Set<Permission> permissions;

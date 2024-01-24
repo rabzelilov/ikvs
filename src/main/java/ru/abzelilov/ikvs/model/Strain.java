@@ -1,10 +1,7 @@
 package ru.abzelilov.ikvs.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,14 +15,18 @@ import lombok.experimental.Accessors;
 @Table(name = "Strain")
 public class Strain {
 
-    /** Идентификатор сообщения */
+    /** Идентификатор штамма */
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue
     private Long id;
+
+    @Column(name = "idStrain", nullable = false)
+    private Long idStrain;
 
     /** Видовое название */
     @Column(name = "kind")
-    private String kind;
+    private String kindName;
 
     /** Синонимы видового названия */
     @Column(name = "synonyms")
