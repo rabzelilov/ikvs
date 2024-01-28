@@ -2,16 +2,11 @@ package ru.abzelilov.ikvs.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Schema(description = "Транспортный объект штамма для быстрого создания")
-public class StrainAddDto {
+@EqualsAndHashCode(callSuper = true)
+public class StrainAddDto extends CardShortDto{
 
-    /** Идентификатор штамма */
-    @Schema(description = "Идентификатор штамма")
-    private Long idStrain;
-
-    /** Видовое название */
-    @Schema(description = "Видовое название")
-    private String kind;
 }

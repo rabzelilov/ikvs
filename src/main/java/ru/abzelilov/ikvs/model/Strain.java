@@ -49,7 +49,7 @@ public class Strain {
     private String pathogenGroup;
 
     /** Название штамма */
-    @Schema(description = "Род")
+    @Schema(description = "Название")
     private String name;
 
     /** Консорциум */

@@ -89,8 +89,8 @@ public class StrainService {
      * @param strainAddDto транспортный объект {@link StrainAddDto}
      * @return транспортный объект {@link CardShortDto}
      */
-    public CardShortDto saveStrain(StrainAddDto strainAddDto) {
-            Strain strain = strainMapper.toStrain(strainAddDto);
+    public CardShortDto saveStrain(CardShortDto cardShortDto) {
+            Strain strain = strainMapper.toStrain(cardShortDto);
             Strain savedStrain = strainRepository.save(strain);
 
         return strainMapper.toCardShortDto(savedStrain);

@@ -16,6 +16,6 @@ public class StrainUpdateDto extends StrainAddDto {
 
     /** Идентификатор филиала */
     @NotNull
-    @Schema(description = "Идентификатор филиала")
+    @Schema(description = "Идентификатор штамма")
     private Long id;
 }
