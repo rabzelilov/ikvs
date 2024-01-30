@@ -3,26 +3,20 @@ package ru.abzelilov.ikvs.security.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ru.abzelilov.ikvs.security.filter.JwtAuthenticationFilter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.HttpMethod.*;
@@ -41,7 +35,10 @@ public class SecurityConfiguration  {
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
-            "/api/v1/user/demo-controller"
+            "/api/v1/user/demo-controller/**",
+            "/api/v1/user/demo-controller",
+            "/api/v1/user/demo-controller/byId/{id}",
+            "/api/v1/user/demo-controller/filter"
     };
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final LogoutHandler logoutHandler;
@@ -77,12 +74,12 @@ public class SecurityConfiguration  {
         return http.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() throws Exception {
-        return web -> web
-                        .ignoring()
-                        .requestMatchers(OPTIONS);
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() throws Exception {
+//        return web -> web
+//                        .ignoring()
+//                        .requestMatchers(OPTIONS);
+//    }
 
     @Bean
     public CorsConfigurationSource corsConfiguration() {

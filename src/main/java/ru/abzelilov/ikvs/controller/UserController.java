@@ -12,9 +12,12 @@ import ru.abzelilov.ikvs.dto.CardDto;
 import ru.abzelilov.ikvs.dto.CardShortDto;
 import ru.abzelilov.ikvs.dto.PageDto;
 import ru.abzelilov.ikvs.filter.StrainFilterParams;
+import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
+import ru.abzelilov.ikvs.model.Strain;
 import ru.abzelilov.ikvs.service.StrainService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Hidden
 @RestController
@@ -37,6 +40,18 @@ public class UserController {
         return new ResponseEntity<>(strainService.getAllStrains(), HttpStatus.OK);
     }
 
+    /**
+     * Возвращает список всех штаммаов
+     *
+     * @return ответ на запрос, в случае успешного ответа метод возвращает список штаммов и НТТР 200 OK
+     */
+    @CrossOrigin
+    @GetMapping("/byId/{id}")
+    @Operation(summary = "Получение списка всех штаммов")
+    public ResponseEntity<Optional<CardDto>> getStrainById(@PathVariable Long id) {
+        return new ResponseEntity<>(strainService.getStrainById(id), HttpStatus.OK);
+    }
+
 
     /**
      * Возвращает список штаммов с учетом фильтрации и пагинации
@@ -53,5 +68,10 @@ public class UserController {
                         departmentFilterParams.getPageSize()), departmentFilterParams);
 
         return new ResponseEntity<>(new PageDto<>(page.getTotalElements(), page.getContent()), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/search")
+    public Page<Strain> search(@RequestBody StrainSearchRequest request) {
+        return strainService.searchOperatingSystem(request);
     }
 }

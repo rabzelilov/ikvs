@@ -14,6 +14,8 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = IGNORE)
 public interface StrainMapper {
 
+    @Mapping(target = "kindName", source = "cardDto.kind")
+    @Mapping(target = "isTypical", source = "cardDto.isTypical")
     Strain toStrain(CardDto cardDto);
 
 
@@ -21,7 +23,7 @@ public interface StrainMapper {
     @Mapping(target = "idStrain", source = "cardShortDto.idStrain")
     @Mapping(target = "synonyms", source = "cardShortDto.synonyms")
     @Mapping(target = "genus", source = "cardShortDto.genus")
-    @Mapping(target = "typical", source = "cardShortDto.isTypical")
+    @Mapping(target = "isTypical", source = "cardShortDto.isTypical")
     @Mapping(target = "applicationArea", source = "cardShortDto.applicationArea")
     @Mapping(target = "pathogenGroup", source = "cardShortDto.pathogenGroup")
     Strain toStrain(CardShortDto cardShortDto);

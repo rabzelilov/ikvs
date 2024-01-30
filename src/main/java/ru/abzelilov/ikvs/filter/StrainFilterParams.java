@@ -14,8 +14,8 @@ import ru.abzelilov.ikvs.filter.common.PageFilterParams;
 public class StrainFilterParams extends PageFilterParams {
 
     /** Наименование */
-    @Schema(description = "Наименование")
-    private String name;
+    @Schema(description = "Род")
+    private String genus;
 
     /** Консорциум */
     @Schema(description = "Консорциум")

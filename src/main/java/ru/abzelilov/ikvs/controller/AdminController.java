@@ -6,8 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.abzelilov.ikvs.dto.CardDto;
 import ru.abzelilov.ikvs.dto.CardShortDto;
 import ru.abzelilov.ikvs.dto.StrainAddDto;
+import ru.abzelilov.ikvs.dto.StrainFullAddDto;
 import ru.abzelilov.ikvs.model.StrainUpdateDto;
 import ru.abzelilov.ikvs.service.StrainService;
 
@@ -29,16 +31,31 @@ public class AdminController {
     /**
      * Сохраняет штамм
      *
-     * @param departmentAddDto траспортный объект {@link StrainAddDto}
+     * @param strainAddDto траспортный объект {@link StrainAddDto}
      * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
      */
     @PostMapping
     @Operation(summary = "Создание штамма")
     @PreAuthorize("hasAuthority('admin:create')")
     @CrossOrigin
-    public ResponseEntity<CardShortDto> saveStrain(@RequestBody StrainAddDto departmentAddDto) {
+    public ResponseEntity<CardShortDto> saveStrain(@RequestBody StrainAddDto strainAddDto) {
         return new ResponseEntity<>(
-                strainService.saveStrain(departmentAddDto), HttpStatus.OK);
+                strainService.saveStrain(strainAddDto), HttpStatus.OK);
+    }
+
+    /**
+     * Сохраняет штамм
+     *
+     * @param strainFullAddDto траспортный объект {@link StrainAddDto}
+     * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
+     */
+    @PostMapping("/saveStrain")
+    @Operation(summary = "Создание штамма")
+    @PreAuthorize("hasAuthority('admin:create')")
+    @CrossOrigin
+    public ResponseEntity<CardDto> saveStrain(@RequestBody StrainFullAddDto strainFullAddDto) {
+        return new ResponseEntity<>(
+                strainService.saveStrain(strainFullAddDto), HttpStatus.OK);
     }
 
     /**

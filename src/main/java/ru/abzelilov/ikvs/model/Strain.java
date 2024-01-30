@@ -2,8 +2,13 @@ package ru.abzelilov.ikvs.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 
 /**
@@ -11,9 +16,14 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 @Table(name = "Strain")
-public class Strain {
+public class Strain implements Serializable {
+
+    private static final long serialVersionUID = -1730538653948604611L;
 
     /** Идентификатор штамма */
     @Id

@@ -27,24 +27,24 @@ public class StrainSpecification implements Specification<Strain> {
     public Predicate toPredicate(Root<Strain> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (strainFilterParams.getName() != null) predicates.add(getNamePredicate(root, cb));
+        if (strainFilterParams.getGenus() != null) predicates.add(getGenusPredicate(root, cb));
         if (strainFilterParams.getConsortium() != null) predicates.add(getCollectionNamePredicate(root, cb));
         if (strainFilterParams.getNameCollection() != null) predicates.add(getConsortiumPredicate(root, cb));
 
         return cb.and(predicates.toArray(new Predicate[0]));
     }
 
-    private Predicate getNamePredicate(Root<Strain> root, CriteriaBuilder cb) {
-        return cb.like(root.get(Strain_.name),"%" + strainFilterParams.getName() + "%");
+    private Predicate getGenusPredicate(Root<Strain> root, CriteriaBuilder cb) {
+        return cb.like(root.get(Strain_.genus),"%" + strainFilterParams.getGenus() + "%");
     }
 
 
     private Predicate getConsortiumPredicate(Root<Strain> root, CriteriaBuilder cb) {
-        return cb.equal(root.get(Strain_.consortium), strainFilterParams.getConsortium());
+        return cb.equal(root.get(Strain_.consortium), "%" + strainFilterParams.getConsortium() + "%");
     }
 
 
     private Predicate getCollectionNamePredicate(Root<Strain> root, CriteriaBuilder cb) {
-        return cb.equal(root.get(Strain_.nameCollection), strainFilterParams.getNameCollection());
+        return cb.equal(root.get(Strain_.nameCollection), "%" + strainFilterParams.getNameCollection() + "%");
     }
 }

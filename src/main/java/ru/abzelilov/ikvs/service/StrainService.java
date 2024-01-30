@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import ru.abzelilov.ikvs.dto.CardDto;
 import ru.abzelilov.ikvs.dto.CardShortDto;
 import ru.abzelilov.ikvs.filter.StrainFilterParams;
+import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
+import ru.abzelilov.ikvs.filter.common.StrainSearchSpecification;
 import ru.abzelilov.ikvs.mapper.StrainMapper;
 import ru.abzelilov.ikvs.model.Strain;
 import ru.abzelilov.ikvs.dto.StrainAddDto;
@@ -16,6 +18,7 @@ import ru.abzelilov.ikvs.repository.StrainRepository;
 import ru.abzelilov.ikvs.specification.StrainSpecification;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -46,6 +49,16 @@ public class StrainService {
                 .stream()
                 .map(strainMapper::toCardDto)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Возвращает список всех штаммов
+     *
+     * @return список всех штаммов
+     */
+    public Optional<CardDto> getStrainById(Long id) {
+        return strainRepository.findById(id)
+                .map(strainMapper::toCardDto);
     }
 
     
@@ -84,9 +97,9 @@ public class StrainService {
 
 
     /**
-     * Сохраняет штамм
+     * Сохраняет штамм в краткой форме
      *
-     * @param strainAddDto транспортный объект {@link StrainAddDto}
+     * @param cardShortDto транспортный объект {@link StrainAddDto}
      * @return транспортный объект {@link CardShortDto}
      */
     public CardShortDto saveStrain(CardShortDto cardShortDto) {
@@ -94,6 +107,19 @@ public class StrainService {
             Strain savedStrain = strainRepository.save(strain);
 
         return strainMapper.toCardShortDto(savedStrain);
+    }
+
+    /**
+     * Сохраняет полный штамм
+     *
+     * @param cardDto транспортный объект {@link StrainAddDto}
+     * @return транспортный объект {@link CardShortDto}
+     */
+    public CardDto saveStrain(CardDto cardDto) {
+        Strain strain = strainMapper.toStrain(cardDto);
+        Strain savedStrain = strainRepository.save(strain);
+
+        return strainMapper.toCardDto(savedStrain);
     }
 
     /**
@@ -126,5 +152,11 @@ public class StrainService {
      */
     public void deleteAllStrains() {
         strainRepository.deleteAll();
+    }
+
+    public Page<Strain> searchOperatingSystem(StrainSearchRequest request) {
+        StrainSearchSpecification<Strain> specification = new StrainSearchSpecification<>(request);
+        Pageable pageable = StrainSearchSpecification.getPageable(request.getPage(), request.getSize());
+        return strainRepository.findAll(specification, pageable);
     }
 }
