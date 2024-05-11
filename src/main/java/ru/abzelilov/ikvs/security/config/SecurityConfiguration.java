@@ -35,10 +35,10 @@ public class SecurityConfiguration  {
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
-            "/api/v1/user/demo-controller/**",
-            "/api/v1/user/demo-controller",
-            "/api/v1/user/demo-controller/byId/{id}",
-            "/api/v1/user/demo-controller/filter"
+            "/api/v1/user/bacteria/**",
+            "/api/v1/user/bacteria",
+            "/api/v1/user/bacteria/byId/{id}",
+            "/api/v1/user/bacteria/filter"
     };
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final LogoutHandler logoutHandler;

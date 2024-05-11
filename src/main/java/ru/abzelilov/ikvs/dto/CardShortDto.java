@@ -18,6 +18,10 @@ public class CardShortDto {
     @Schema(description = "Идентификатор штамма")
     private Long idStrain;
 
+    /** Досттуп для внешних пользователей */
+    @Schema(description = "isVisible")
+    private boolean isVisible;
+
     /** Видовое название */
     @Schema(description = "Видовое название")
     private String kind;

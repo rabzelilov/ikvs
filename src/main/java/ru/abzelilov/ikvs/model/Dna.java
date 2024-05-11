@@ -8,11 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 
 /**
- * Штамм
+ * ДНК
  */
 @Data
 @Entity
@@ -20,10 +22,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-@Table(name = "Strain")
-public class Strain implements Serializable {
+@Table(name = "Dna")
+public class Dna implements Serializable {
 
-    private static final long serialVersionUID = -1730538653948604611L;
+    @Serial
+    private static final long serialVersionUID = -1730538653948604633L;
 
     /** Идентификатор штамма */
     @Id
@@ -34,45 +37,33 @@ public class Strain implements Serializable {
     @Column(name = "idStrain", nullable = false)
     private Long idStrain;
 
-    /** Видовое название */
-    @Column(name = "kind")
-    private String kindName;
+    /** Досттуп для внешних пользователей */
+    @Column(name = "isVisible")
+    private boolean isVisible;
 
-    /** Синонимы видового названия */
-    @Column(name = "synonyms")
-    private String synonyms;
+    /** Номера криопробирок */
+    @Column(name = "cryoprobeNumbers")
+    private String cryoprobeNumbers;
 
-    /** Род */
-    @Column(name = "genus")
-    private String genus;
+    /** Дата консервации */
+    @Column(name = "dateOfConservation")
+    private LocalDateTime dateOfConservation;
 
-    /** Типовой/нетиповой штамм */
-    @Column(name = "isTypical")
-    private boolean isTypical;
+    /** Дата отбора образца */
+    @Column(name = "substrate")
+    private LocalDateTime dateOfSelection;
 
-    /** Область приминения */
-    @Column(name = "application_area")
-    private String applicationArea;
-
-    /** Группа патогенности */
-    @Column(name = "pathogen_group")
-    private String pathogenGroup;
+    /** Географическое название места отбора */
+    @Column(name = "geographyOfSelection")
+    private String geographyOfSelection;
 
     /** Название штамма */
     @Schema(description = "Название")
     private String name;
 
-    /** Консорциум */
-    @Column(name = "consortium")
-    private Boolean consortium;
-
     /** Название коллекции */
     @Column(name = "name_collection")
     private String nameCollection;
-
-    /** Семейство */
-    @Column(name = "family")
-    private String family;
 
     /** Фила */
     @Column(name = "fila")
@@ -89,14 +80,6 @@ public class Strain implements Serializable {
     /** GPS координаты */
     @Column(name = "coordinates")
     private String coordinates;
-
-    /** Страна выделения */
-    @Column(name = "sourceCountry")
-    private String sourceCountry;
-
-    /** Генетический маркер */
-    @Column(name = "marker_genetic")
-    private String markerGenetic;
 
     /** Номер геномной сборки */
     @Column(name = "number_genetic_build")

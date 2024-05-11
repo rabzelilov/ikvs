@@ -10,8 +10,8 @@ import ru.abzelilov.ikvs.dto.CardDto;
 import ru.abzelilov.ikvs.dto.CardShortDto;
 import ru.abzelilov.ikvs.dto.StrainAddDto;
 import ru.abzelilov.ikvs.dto.StrainFullAddDto;
-import ru.abzelilov.ikvs.model.StrainUpdateDto;
-import ru.abzelilov.ikvs.service.StrainService;
+import ru.abzelilov.ikvs.dto.StrainUpdateDto;
+import ru.abzelilov.ikvs.service.BacteriaService;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ import ru.abzelilov.ikvs.service.StrainService;
 @RequestMapping("/api/v1/admin")
 public class AdminController {
 
-    private final StrainService strainService;
+    private final BacteriaService bacteriaService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin:read')")
@@ -40,7 +40,7 @@ public class AdminController {
     @CrossOrigin
     public ResponseEntity<CardShortDto> saveStrain(@RequestBody StrainAddDto strainAddDto) {
         return new ResponseEntity<>(
-                strainService.saveStrain(strainAddDto), HttpStatus.OK);
+                bacteriaService.saveBacteria(strainAddDto), HttpStatus.OK);
     }
 
     /**
@@ -55,21 +55,21 @@ public class AdminController {
     @CrossOrigin
     public ResponseEntity<CardDto> saveStrain(@RequestBody StrainFullAddDto strainFullAddDto) {
         return new ResponseEntity<>(
-                strainService.saveStrain(strainFullAddDto), HttpStatus.OK);
+                bacteriaService.saveBacteria(strainFullAddDto), HttpStatus.OK);
     }
 
     /**
      * Обновляет штамм
      *
-     * @param departmentUpdateDto траспортный объект {@link StrainUpdateDto}
+     * @param strainUpdateDto траспортный объект {@link StrainUpdateDto}
      * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
      */
     @PutMapping
     @Operation(summary = "Редактирование штамма")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<CardShortDto> updateStrain(@RequestBody StrainUpdateDto departmentUpdateDto) {
+    public ResponseEntity<CardDto> updateStrain(@RequestBody StrainUpdateDto strainUpdateDto) {
         return new ResponseEntity<>(
-                strainService.updateStrain(departmentUpdateDto), HttpStatus.OK);
+                bacteriaService.updateBacteria(strainUpdateDto), HttpStatus.OK);
     }
 
     /**
@@ -82,6 +82,6 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasAuthority('admin:delete')")
     public void deleteStrain(@PathVariable("id") Long id) {
-        strainService.deleteStrain(id);
+        bacteriaService.deleteBacteria(id);
     }
 }

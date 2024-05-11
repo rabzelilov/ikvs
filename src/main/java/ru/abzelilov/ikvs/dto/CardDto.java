@@ -1,8 +1,11 @@
 package ru.abzelilov.ikvs.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 /**
  * Транспортный объект карточки штамма
@@ -12,8 +15,25 @@ import lombok.EqualsAndHashCode;
 @Schema(description = "Транспортный объект карточки штамма")
 public class CardDto extends CardShortDto {
 
+
+    /** Номера ампул */
+    @Schema(description = "ampouleNumbers")
+    private String ampouleNumbers;
+
+    /** Дата лиофилизации */
+    @Schema(description = "dateOfLyophilization")
+    private LocalDateTime dateOfLyophilization;
+
+    /** Номера криопробирок */
+    @Schema(description = "cryoprobeNumbers")
+    private String cryoprobeNumbers;
+
+    /** Дата консервации */
+    @Schema(description = "dateOfConservation")
+    private LocalDateTime dateOfConservation;
+
     /** Название штамма */
-    @Schema(description = "Род")
+    @Schema(description = "Название штамма")
     private String name;
 
     /** Консорциум */

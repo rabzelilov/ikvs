@@ -7,8 +7,9 @@ import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import ru.abzelilov.ikvs.filter.StrainFilterParams;
-import ru.abzelilov.ikvs.model.Strain;
-import ru.abzelilov.ikvs.model.Strain_;
+import ru.abzelilov.ikvs.model.Seaweed;
+import ru.abzelilov.ikvs.model.Simplest;
+import ru.abzelilov.ikvs.model.Simplest_;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,13 @@ import java.util.List;
  * Спецификация для поиска штаммов по фильтру
  */
 @RequiredArgsConstructor
-public class StrainSpecification implements Specification<Strain> {
+public class SimplestSpecification implements Specification<Simplest> {
 
     private final StrainFilterParams strainFilterParams;
 
 
     @Override
-    public Predicate toPredicate(Root<Strain> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+    public Predicate toPredicate(Root<Simplest> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
         if (strainFilterParams.getGenus() != null) predicates.add(getGenusPredicate(root, cb));
@@ -34,17 +35,17 @@ public class StrainSpecification implements Specification<Strain> {
         return cb.and(predicates.toArray(new Predicate[0]));
     }
 
-    private Predicate getGenusPredicate(Root<Strain> root, CriteriaBuilder cb) {
-        return cb.like(root.get(Strain_.genus),"%" + strainFilterParams.getGenus() + "%");
+    private Predicate getGenusPredicate(Root<Simplest> root, CriteriaBuilder cb) {
+        return cb.like(root.get(Simplest_.genus),"%" + strainFilterParams.getGenus() + "%");
     }
 
 
-    private Predicate getConsortiumPredicate(Root<Strain> root, CriteriaBuilder cb) {
-        return cb.equal(root.get(Strain_.consortium), "%" + strainFilterParams.getConsortium() + "%");
+    private Predicate getConsortiumPredicate(Root<Simplest> root, CriteriaBuilder cb) {
+        return cb.equal(root.get(Simplest_.consortium), "%" + strainFilterParams.getConsortium() + "%");
     }
 
 
-    private Predicate getCollectionNamePredicate(Root<Strain> root, CriteriaBuilder cb) {
-        return cb.equal(root.get(Strain_.nameCollection), "%" + strainFilterParams.getNameCollection() + "%");
+    private Predicate getCollectionNamePredicate(Root<Simplest> root, CriteriaBuilder cb) {
+        return cb.equal(root.get(Simplest_.nameCollection), "%" + strainFilterParams.getNameCollection() + "%");
     }
 }
