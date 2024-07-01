@@ -9,10 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.abzelilov.ikvs.dto.*;
-import ru.abzelilov.ikvs.dto.bacteria.BacteriaDto;
+import ru.abzelilov.ikvs.dto.archaea.ArchaeaDto;
+import ru.abzelilov.ikvs.dto.archaea.ArchaeaUpdateDto;
 import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
-import ru.abzelilov.ikvs.model.Bacteria;
-import ru.abzelilov.ikvs.service.BacteriaService;
+import ru.abzelilov.ikvs.model.Archaea;
+import ru.abzelilov.ikvs.service.ArchaeaService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +21,10 @@ import java.util.Optional;
 @Hidden
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user/bacteria")
-public class BacteriaController {
+@RequestMapping("/api/v1/user/archaea")
+public class ArchaeaController {
 
-    private final BacteriaService bacteriaService;
+    private final ArchaeaService archaeaService;
 
 
     /**
@@ -34,8 +35,8 @@ public class BacteriaController {
     @CrossOrigin
     @GetMapping
     @Operation(summary = "Получение списка всех штаммов")
-    public ResponseEntity<List<BacteriaDto>> getAllStrains() {
-        return new ResponseEntity<>(bacteriaService.getAllBacteria(), HttpStatus.OK);
+    public ResponseEntity<List<ArchaeaDto>> getAllStrains() {
+        return new ResponseEntity<>(archaeaService.getAllArchaea(), HttpStatus.OK);
     }
 
     /**
@@ -46,43 +47,58 @@ public class BacteriaController {
     @CrossOrigin
     @GetMapping("/byId/{id}")
     @Operation(summary = "Получение списка всех штаммов")
-    public ResponseEntity<Optional<BacteriaDto>> getStrainById(@PathVariable Long id) {
-        return new ResponseEntity<>(bacteriaService.getBacteriaById(id), HttpStatus.OK);
+    public ResponseEntity<Optional<ArchaeaDto>> getStrainById(@PathVariable Long id) {
+        return new ResponseEntity<>(archaeaService.getArchaeaById(id), HttpStatus.OK);
     }
 
 
     @PostMapping(value = "/search")
-    public Page<Bacteria> search(@RequestBody StrainSearchRequest request) {
-        return bacteriaService.searchBacteria(request);
+    public Page<Archaea> search(@RequestBody StrainSearchRequest request) {
+        return archaeaService.searchArchaea(request);
     }
+
+//    /**
+//     * Сохраняет штамм
+//     *
+//     * @param strainAddDto траспортный объект {@link StrainAddDto}
+//     * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
+//     */
+//    @PostMapping
+//    @Operation(summary = "Создание штамма")
+//    @PreAuthorize("hasAuthority('admin:create')")
+//    @CrossOrigin
+//    public ResponseEntity<CardShortDto> saveStrain(@RequestBody StrainAddDto strainAddDto) {
+//        return new ResponseEntity<>(
+//                archaeaService.saveArchaea(strainAddDto), HttpStatus.OK);
+//    }
 
     /**
      * Сохраняет штамм
      *
-     * @param bacteriaDto траспортный объект {@link StrainAddDto}
+     * @param archaeaDto траспортный объект {@link StrainAddDto}
      * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
      */
-    @PostMapping("/saveBacteria")
+    @PostMapping("/saveArchaea")
     @Operation(summary = "Создание штамма")
     @PreAuthorize("hasAuthority('admin:create')")
     @CrossOrigin
-    public ResponseEntity<BacteriaDto> saveStrain(@RequestBody BacteriaDto bacteriaDto) {
+    public ResponseEntity<ArchaeaDto> saveStrain(@RequestBody ArchaeaDto archaeaDto) {
         return new ResponseEntity<>(
-                bacteriaService.saveBacteria(bacteriaDto), HttpStatus.OK);
+                archaeaService.saveArchaea(archaeaDto), HttpStatus.OK);
     }
 
     /**
      * Обновляет штамм
      *
-     * @param bacteriaUpdateDto траспортный объект {@link BacteriaUpdateDto}
+     * @param archaeaUpdateDto траспортный объект {@link BacteriaUpdateDto}
      * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
      */
-    @PutMapping("/updateBacteria")
+    @PutMapping("/updateArchaea")
     @Operation(summary = "Редактирование штамма")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<BacteriaDto> updateStrain(@RequestBody BacteriaUpdateDto bacteriaUpdateDto) {
+    public ResponseEntity<ArchaeaDto> updateStrain(@RequestBody ArchaeaUpdateDto archaeaUpdateDto) {
         return new ResponseEntity<>(
-                bacteriaService.updateBacteria(bacteriaUpdateDto), HttpStatus.OK);
+                archaeaService.updateArchaea(archaeaUpdateDto), HttpStatus.OK);
     }
 
     /**
@@ -91,10 +107,10 @@ public class BacteriaController {
      *
      * @param id идентификатор штамма
      */
-    @DeleteMapping(value = "deleteBacteria/{id}")
+    @DeleteMapping(value = "deleteArchaea/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasAuthority('admin:delete')")
     public void deleteStrain(@PathVariable("id") Long id) {
-        bacteriaService.deleteBacteria(id);
+        archaeaService.deleteArchaea(id);
     }
 }

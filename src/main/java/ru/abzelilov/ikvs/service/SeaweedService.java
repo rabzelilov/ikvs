@@ -5,10 +5,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.abzelilov.ikvs.dto.CardDto;
-import ru.abzelilov.ikvs.dto.CardShortDto;
+import ru.abzelilov.ikvs.dto.BacteriaUpdateDto;
+import ru.abzelilov.ikvs.dto.Seaweed.SeaweedDto;
+import ru.abzelilov.ikvs.dto.Seaweed.SeaweedUpdateDto;
 import ru.abzelilov.ikvs.dto.StrainAddDto;
-import ru.abzelilov.ikvs.dto.StrainUpdateDto;
 import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
 import ru.abzelilov.ikvs.filter.common.StrainSearchSpecification;
 import ru.abzelilov.ikvs.mapper.SeaweedMapper;
@@ -43,10 +43,10 @@ public class SeaweedService {
      *
      * @return список всех штаммов
      */
-    public List<CardDto> getAllStrains() {
+    public List<SeaweedDto> getAllSeaweed() {
         return seaweedRepository.findAll()
                 .stream()
-                .map(seaweedMapper::toCardDto)
+                .map(seaweedMapper::toSeaweedDto)
                 .collect(Collectors.toList());
     }
 
@@ -55,9 +55,9 @@ public class SeaweedService {
      *
      * @return список всех штаммов
      */
-    public Optional<CardDto> getStrainById(Long id) {
+    public Optional<SeaweedDto> getSeaweedById(Long id) {
         return seaweedRepository.findById(id)
-                .map(seaweedMapper::toCardDto);
+                .map(seaweedMapper::toSeaweedDto);
     }
 
     
@@ -66,9 +66,9 @@ public class SeaweedService {
      *
      * @return список всех штаммов
      */
-    public List<CardShortDto> getAllShortStrains() {
+    public List<SeaweedDto> getAllShortStrains() {
         List<Seaweed> archaea = seaweedRepository.findAll();
-        return archaea.stream().map(seaweedMapper::toCardShortDto).collect(Collectors.toList());
+        return archaea.stream().map(seaweedMapper::toSeaweedDto).collect(Collectors.toList());
     }
 
     /**
@@ -82,45 +82,45 @@ public class SeaweedService {
     }
 
 
-    /**
-     * Сохраняет штамм в краткой форме
-     *
-     * @param cardShortDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
-     */
-    public CardShortDto saveStrain(CardShortDto cardShortDto) {
-            Seaweed archaea = seaweedMapper.toSeaweed(cardShortDto);
-            Seaweed savedBacteria = seaweedRepository.save(archaea);
-
-        return seaweedMapper.toCardShortDto(savedBacteria);
-    }
+//    /**
+//     * Сохраняет штамм в краткой форме
+//     *
+//     * @param SeaweedDto транспортный объект {@link StrainAddDto}
+//     * @return транспортный объект {@link SeaweedDto}
+//     */
+//    public SeaweedDto saveSeaweed(SeaweedDto SeaweedDto) {
+//            Seaweed archaea = seaweedMapper.toSeaweed(SeaweedDto);
+//            Seaweed savedBacteria = seaweedRepository.save(archaea);
+//
+//        return seaweedMapper.toSeaweedDto(savedBacteria);
+//    }
 
     /**
      * Сохраняет полный штамм
      *
-     * @param cardDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param SeaweedDto транспортный объект {@link StrainAddDto}
+     * @return транспортный объект {@link SeaweedDto}
      */
-    public CardDto saveStrain(CardDto cardDto) {
-        Seaweed archaea = seaweedMapper.toSeaweed(cardDto);
+    public SeaweedDto saveSeaweed(SeaweedDto SeaweedDto) {
+        Seaweed archaea = seaweedMapper.toSeaweed(SeaweedDto);
         Seaweed savedBacteria = seaweedRepository.save(archaea);
 
-        return seaweedMapper.toCardDto(savedBacteria);
+        return seaweedMapper.toSeaweedDto(savedBacteria);
     }
 
     /**
      * Обновляет штамм
      *
-     * @param strainUpdateDto траспортный объект штамма {@link StrainUpdateDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param seaweedUpdateDto траспортный объект штамма {@link BacteriaUpdateDto}
+     * @return транспортный объект {@link SeaweedDto}
      */
-    public CardDto updateStrain(StrainUpdateDto strainUpdateDto) {
+    public SeaweedDto updateSeaweed(SeaweedUpdateDto seaweedUpdateDto) {
 
-            log.info(String.format("Update strain with id %s",strainUpdateDto.getId()));
-            Seaweed archaea = seaweedMapper.toSeaweed(strainUpdateDto);
+            log.info(String.format("Update strain with id %s", seaweedUpdateDto.getId()));
+            Seaweed archaea = seaweedMapper.toSeaweed(seaweedUpdateDto);
             Seaweed updatedBacteria = seaweedRepository.save(archaea);
 
-        return seaweedMapper.toCardDto(updatedBacteria);
+        return seaweedMapper.toSeaweedDto(updatedBacteria);
     }
 
     /**
@@ -128,7 +128,7 @@ public class SeaweedService {
      *
      * @param id идентификатор штамма
      */
-    public void deleteStrain(Long id) {
+    public void deleteSeaweed(Long id) {
             seaweedRepository.deleteById(id);
     }
 
@@ -140,7 +140,7 @@ public class SeaweedService {
     }
 
 
-    public Page<Seaweed> searchArchaea(StrainSearchRequest request) {
+    public Page<Seaweed> searchSeaweed(StrainSearchRequest request) {
         StrainSearchSpecification<Seaweed> specification = new StrainSearchSpecification<>(request);
         Pageable pageable = StrainSearchSpecification.getPageable(request.getPage(), request.getSize());
         return seaweedRepository.findAll(specification, pageable);

@@ -5,10 +5,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.abzelilov.ikvs.dto.CardDto;
-import ru.abzelilov.ikvs.dto.CardShortDto;
+import ru.abzelilov.ikvs.dto.BacteriaUpdateDto;
 import ru.abzelilov.ikvs.dto.StrainAddDto;
-import ru.abzelilov.ikvs.dto.StrainUpdateDto;
+import ru.abzelilov.ikvs.dto.archaea.ArchaeaDto;
+import ru.abzelilov.ikvs.dto.archaea.ArchaeaUpdateDto;
 import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
 import ru.abzelilov.ikvs.filter.common.StrainSearchSpecification;
 import ru.abzelilov.ikvs.mapper.ArchaeaMapper;
@@ -30,8 +30,8 @@ public class ArchaeaService {
     /**
      * Репозиторий для работы с штаммом
      */
+    private final ArchaeaRepository archaeaRepository;
 
-    private final ArchaeaRepository  archaeaRepository;
 
     /**
      * Конвертер для штамма
@@ -43,10 +43,10 @@ public class ArchaeaService {
      *
      * @return список всех штаммов
      */
-    public List<CardDto> getAllStrains() {
+    public List<ArchaeaDto> getAllArchaea() {
         return archaeaRepository.findAll()
                 .stream()
-                .map(archaeaMapper::toCardDto)
+                .map(archaeaMapper::toArchaeaDto)
                 .collect(Collectors.toList());
     }
 
@@ -55,72 +55,72 @@ public class ArchaeaService {
      *
      * @return список всех штаммов
      */
-    public Optional<CardDto> getStrainById(Long id) {
+    public Optional<ArchaeaDto> getArchaeaById(Long id) {
         return archaeaRepository.findById(id)
-                .map(archaeaMapper::toCardDto);
+                .map(archaeaMapper::toArchaeaDto);
     }
 
-    
+
     /**
      * Возвращает список штаммов
      *
      * @return список всех штаммов
      */
-    public List<CardShortDto> getAllShortStrains() {
-        List<Archaea> archaea = archaeaRepository.findAll();
-        return archaea.stream().map(archaeaMapper::toCardShortDto).collect(Collectors.toList());
-    }
+//    public List<CardShortDto> getAllShortStrains() {
+//        List<Archaea> Archaea = archaeaRepository.findAll();
+//        return Archaea.stream().map(archaeaMapper::toArchaeaDto).collect(Collectors.toList());
+//    }
 
     /**
      * Сохраняет список штаммов (штаммов)
      *
-     * @param archaea штамми (штамми) {@link List< Archaea >}
+     * @param Archaea штамми (штамми) {@link List< Archaea >}
      * @return штамми (штамми) {@link List< Archaea >}
      */
-    public List<Archaea> saveStrains(List<Archaea> archaea) {
-        return archaeaRepository.saveAll(archaea);
+    public List<Archaea> saveStrains(List<Archaea> Archaea) {
+        return archaeaRepository.saveAll(Archaea);
     }
 
 
-    /**
-     * Сохраняет штамм в краткой форме
-     *
-     * @param cardShortDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
-     */
-    public CardShortDto saveStrain(CardShortDto cardShortDto) {
-            Archaea archaea = archaeaMapper.toArchaea(cardShortDto);
-            Archaea savedBacteria = archaeaRepository.save(archaea);
-
-        return archaeaMapper.toCardShortDto(savedBacteria);
-    }
+//    /**
+//     * Сохраняет штамм в краткой форме
+//     *
+//     * @param archaeaDto транспортный объект {@link StrainAddDto}
+//     * @return транспортный объект {@link CardShortDto}
+//     */
+//    public ArchaeaDto saveArchaea(ArchaeaDto archaeaDto) {
+//        Archaea Archaea = archaeaMapper.toArchaea(archaeaDto);
+//        Archaea savedArchaea = archaeaRepository.save(Archaea);
+//
+//        return archaeaMapper.toArchaeaDto(savedArchaea);
+//    }
 
     /**
      * Сохраняет полный штамм
      *
-     * @param cardDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param archaeaDto транспортный объект {@link StrainAddDto}
+     * @return транспортный объект {@link ArchaeaDto}
      */
-    public CardDto saveStrain(CardDto cardDto) {
-        Archaea archaea = archaeaMapper.toArchaea(cardDto);
-        Archaea savedBacteria = archaeaRepository.save(archaea);
+    public ArchaeaDto saveArchaea(ArchaeaDto archaeaDto) {
+        Archaea Archaea = archaeaMapper.toArchaea(archaeaDto);
+        Archaea savedArchaea = archaeaRepository.save(Archaea);
 
-        return archaeaMapper.toCardDto(savedBacteria);
+        return archaeaMapper.toArchaeaDto(savedArchaea);
     }
 
     /**
      * Обновляет штамм
      *
-     * @param strainUpdateDto траспортный объект штамма {@link StrainUpdateDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param archaeaUpdateDto траспортный объект штамма {@link BacteriaUpdateDto}
+     * @return транспортный объект {@link ArchaeaDto}
      */
-    public CardDto updateStrain(StrainUpdateDto strainUpdateDto) {
+    public ArchaeaDto updateArchaea(ArchaeaUpdateDto archaeaUpdateDto) {
 
-            log.info(String.format("Update strain with id %s",strainUpdateDto.getId()));
-            Archaea archaea = archaeaMapper.toArchaea(strainUpdateDto);
-            Archaea updatedBacteria = archaeaRepository.save(archaea);
+        log.info(String.format("Update strain with id %s", archaeaUpdateDto.getId()));
+        Archaea Archaea = archaeaMapper.toArchaea(archaeaUpdateDto);
+        Archaea updatedArchaea = archaeaRepository.save(Archaea);
 
-        return archaeaMapper.toCardDto(updatedBacteria);
+        return archaeaMapper.toArchaeaDto(updatedArchaea);
     }
 
     /**
@@ -128,8 +128,8 @@ public class ArchaeaService {
      *
      * @param id идентификатор штамма
      */
-    public void deleteStrain(Long id) {
-            archaeaRepository.deleteById(id);
+    public void deleteArchaea(Long id) {
+        archaeaRepository.deleteById(id);
     }
 
     /**
@@ -138,7 +138,6 @@ public class ArchaeaService {
     public void deleteAllStrains() {
         archaeaRepository.deleteAll();
     }
-
 
     public Page<Archaea> searchArchaea(StrainSearchRequest request) {
         StrainSearchSpecification<Archaea> specification = new StrainSearchSpecification<>(request);

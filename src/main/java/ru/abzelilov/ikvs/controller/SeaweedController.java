@@ -8,11 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.abzelilov.ikvs.dto.*;
-import ru.abzelilov.ikvs.dto.bacteria.BacteriaDto;
+import ru.abzelilov.ikvs.dto.BacteriaUpdateDto;
+import ru.abzelilov.ikvs.dto.Seaweed.SeaweedDto;
+import ru.abzelilov.ikvs.dto.Seaweed.SeaweedUpdateDto;
+import ru.abzelilov.ikvs.dto.StrainAddDto;
+import ru.abzelilov.ikvs.dto.StrainFullAddDto;
 import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
-import ru.abzelilov.ikvs.model.Bacteria;
-import ru.abzelilov.ikvs.service.BacteriaService;
+import ru.abzelilov.ikvs.model.Seaweed;
+import ru.abzelilov.ikvs.service.SeaweedService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +23,10 @@ import java.util.Optional;
 @Hidden
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user/bacteria")
-public class BacteriaController {
+@RequestMapping("/api/v1/user/seaweed")
+public class SeaweedController {
 
-    private final BacteriaService bacteriaService;
+    private final SeaweedService seaweedService;
 
 
     /**
@@ -34,8 +37,8 @@ public class BacteriaController {
     @CrossOrigin
     @GetMapping
     @Operation(summary = "Получение списка всех штаммов")
-    public ResponseEntity<List<BacteriaDto>> getAllStrains() {
-        return new ResponseEntity<>(bacteriaService.getAllBacteria(), HttpStatus.OK);
+    public ResponseEntity<List<SeaweedDto>> getAllStrains() {
+        return new ResponseEntity<>(seaweedService.getAllSeaweed(), HttpStatus.OK);
     }
 
     /**
@@ -46,43 +49,58 @@ public class BacteriaController {
     @CrossOrigin
     @GetMapping("/byId/{id}")
     @Operation(summary = "Получение списка всех штаммов")
-    public ResponseEntity<Optional<BacteriaDto>> getStrainById(@PathVariable Long id) {
-        return new ResponseEntity<>(bacteriaService.getBacteriaById(id), HttpStatus.OK);
+    public ResponseEntity<Optional<SeaweedDto>> getStrainById(@PathVariable Long id) {
+        return new ResponseEntity<>(seaweedService.getSeaweedById(id), HttpStatus.OK);
     }
 
 
     @PostMapping(value = "/search")
-    public Page<Bacteria> search(@RequestBody StrainSearchRequest request) {
-        return bacteriaService.searchBacteria(request);
+    public Page<Seaweed> search(@RequestBody StrainSearchRequest request) {
+        return seaweedService.searchSeaweed(request);
     }
+
+    //    /**
+//     * Сохраняет штамм
+//     *
+//     * @param strainAddDto траспортный объект {@link StrainAddDto}
+//     * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
+//     */
+//    @PostMapping
+//    @Operation(summary = "Создание штамма")
+//    @PreAuthorize("hasAuthority('admin:create')")
+//    @CrossOrigin
+//    public ResponseEntity<CardShortDto> saveStrain(@RequestBody StrainAddDto strainAddDto) {
+//        return new ResponseEntity<>(
+//                dnaService.saveDna(strainAddDto), HttpStatus.OK);
+//    }
 
     /**
      * Сохраняет штамм
      *
-     * @param bacteriaDto траспортный объект {@link StrainAddDto}
+     * @param seaweedDto траспортный объект {@link StrainAddDto}
      * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
      */
-    @PostMapping("/saveBacteria")
+    @PostMapping("/saveSeaweed")
     @Operation(summary = "Создание штамма")
     @PreAuthorize("hasAuthority('admin:create')")
     @CrossOrigin
-    public ResponseEntity<BacteriaDto> saveStrain(@RequestBody BacteriaDto bacteriaDto) {
+    public ResponseEntity<SeaweedDto> saveStrain(@RequestBody SeaweedDto seaweedDto) {
         return new ResponseEntity<>(
-                bacteriaService.saveBacteria(bacteriaDto), HttpStatus.OK);
+                seaweedService.saveSeaweed(seaweedDto), HttpStatus.OK);
     }
 
     /**
      * Обновляет штамм
      *
-     * @param bacteriaUpdateDto траспортный объект {@link BacteriaUpdateDto}
+     * @param seaweedUpdateDto траспортный объект {@link BacteriaUpdateDto}
      * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
      */
-    @PutMapping("/updateBacteria")
+    @PutMapping("/updateSeaweed")
     @Operation(summary = "Редактирование штамма")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<BacteriaDto> updateStrain(@RequestBody BacteriaUpdateDto bacteriaUpdateDto) {
+    public ResponseEntity<SeaweedDto> updateStrain(@RequestBody SeaweedUpdateDto seaweedUpdateDto) {
         return new ResponseEntity<>(
-                bacteriaService.updateBacteria(bacteriaUpdateDto), HttpStatus.OK);
+                seaweedService.updateSeaweed(seaweedUpdateDto), HttpStatus.OK);
     }
 
     /**
@@ -91,10 +109,10 @@ public class BacteriaController {
      *
      * @param id идентификатор штамма
      */
-    @DeleteMapping(value = "deleteBacteria/{id}")
+    @DeleteMapping(value = "deleteSeaweed/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasAuthority('admin:delete')")
     public void deleteStrain(@PathVariable("id") Long id) {
-        bacteriaService.deleteBacteria(id);
+        seaweedService.deleteSeaweed(id);
     }
 }

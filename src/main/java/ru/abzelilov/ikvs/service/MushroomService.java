@@ -2,18 +2,15 @@ package ru.abzelilov.ikvs.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.abzelilov.ikvs.dto.CardDto;
-import ru.abzelilov.ikvs.dto.CardShortDto;
-import ru.abzelilov.ikvs.dto.StrainAddDto;
-import ru.abzelilov.ikvs.dto.StrainUpdateDto;
-import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
-import ru.abzelilov.ikvs.filter.common.StrainSearchSpecification;
+import ru.abzelilov.ikvs.dto.*;
+import ru.abzelilov.ikvs.dto.MushroomDto.MushroomDto;
+import ru.abzelilov.ikvs.dto.MushroomDto.MushroomUpdateDto;
 import ru.abzelilov.ikvs.mapper.MushroomMapper;
+import ru.abzelilov.ikvs.mapper.StrainMapper;
 import ru.abzelilov.ikvs.model.Mushroom;
 import ru.abzelilov.ikvs.repository.MushroomRepository;
+import ru.abzelilov.ikvs.repository.StrainRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,21 +29,23 @@ public class MushroomService {
      */
 
     private final MushroomRepository mushroomRepository;
-
+    private final StrainRepository strainRepository;
     /**
      * Конвертер для штамма
      */
     private final MushroomMapper mushroomMapper;
+
+    private final StrainMapper strainMapper;
 
     /**
      * Возвращает список всех штаммов
      *
      * @return список всех штаммов
      */
-    public List<CardDto> getAllStrains() {
+    public List<MushroomDto> getAllMushrooms() {
         return mushroomRepository.findAll()
                 .stream()
-                .map(mushroomMapper::toCardDto)
+                .map(mushroomMapper::toMushroomDto)
                 .collect(Collectors.toList());
     }
 
@@ -55,72 +54,72 @@ public class MushroomService {
      *
      * @return список всех штаммов
      */
-    public Optional<CardDto> getStrainById(Long id) {
+    public Optional<MushroomDto> getMushroomById(Long id) {
         return mushroomRepository.findById(id)
-                .map(mushroomMapper::toCardDto);
+                .map(mushroomMapper::toMushroomDto);
     }
 
-    
+
     /**
      * Возвращает список штаммов
      *
      * @return список всех штаммов
      */
-    public List<CardShortDto> getAllShortStrains() {
+    public List<MushroomDto> getAllShortStrains() {
         List<Mushroom> archaea = mushroomRepository.findAll();
-        return archaea.stream().map(mushroomMapper::toCardShortDto).collect(Collectors.toList());
+        return archaea.stream().map(mushroomMapper::toMushroomDto).collect(Collectors.toList());
     }
 
     /**
      * Сохраняет список штаммов (штаммов)
      *
      * @param archaea штамми (штамми) {@link List< Mushroom >}
-     * @return штамми (штамми) {@link List< Mushroom >}
+     * @return штамми (штамми) {@link List<Mushroom>}
      */
     public List<Mushroom> saveStrains(List<Mushroom> archaea) {
         return mushroomRepository.saveAll(archaea);
     }
 
 
-    /**
-     * Сохраняет штамм в краткой форме
-     *
-     * @param cardShortDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
-     */
-    public CardShortDto saveStrain(CardShortDto cardShortDto) {
-            Mushroom archaea = mushroomMapper.toMushroom(cardShortDto);
-            Mushroom savedBacteria = mushroomRepository.save(archaea);
-
-        return mushroomMapper.toCardShortDto(savedBacteria);
-    }
+//    /**
+//     * Сохраняет штамм в краткой форме
+//     *
+//     * @param MushroomDto транспортный объект {@link StrainAddDto}
+//     * @return транспортный объект {@link MushroomDto}
+//     */
+//    public MushroomDto saveMushroom(MushroomDto MushroomDto) {
+//        Mushroom archaea = mushroomMapper.toMushroom(MushroomDto);
+//        Mushroom savedBacteria = mushroomRepository.save(archaea);
+//
+//        return mushroomMapper.toMushroomDto(savedBacteria);
+//    }
 
     /**
      * Сохраняет полный штамм
      *
-     * @param cardDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param MushroomDto транспортный объект {@link StrainAddDto}
+     * @return транспортный объект {@link MushroomDto}
      */
-    public CardDto saveStrain(CardDto cardDto) {
-        Mushroom archaea = mushroomMapper.toMushroom(cardDto);
+    public MushroomDto saveMushroom(MushroomDto MushroomDto) {
+        Mushroom archaea = mushroomMapper.toMushroom(MushroomDto);
         Mushroom savedBacteria = mushroomRepository.save(archaea);
 
-        return mushroomMapper.toCardDto(savedBacteria);
+        return mushroomMapper.toMushroomDto(savedBacteria);
     }
 
     /**
      * Обновляет штамм
      *
-     * @param strainUpdateDto траспортный объект штамма {@link StrainUpdateDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param mushroomUpdateDto траспортный объект штамма {@link BacteriaUpdateDto}
+     * @return транспортный объект {@link MushroomDto}
      */
-    public CardDto updateStrain(StrainUpdateDto strainUpdateDto) {
+    public MushroomDto updateMushroom(MushroomUpdateDto mushroomUpdateDto) {
 
-            log.info(String.format("Update strain with id %s",strainUpdateDto.getId()));
-            Mushroom archaea = mushroomMapper.toMushroom(strainUpdateDto);
-            Mushroom updatedBacteria = mushroomRepository.save(archaea);
+        log.info(String.format("Update strain with id %s", mushroomUpdateDto.getId()));
+        Mushroom archaea = mushroomMapper.toMushroom(mushroomUpdateDto);
+        Mushroom updatedBacteria = mushroomRepository.save(archaea);
 
-        return mushroomMapper.toCardDto(updatedBacteria);
+        return mushroomMapper.toMushroomDto(updatedBacteria);
     }
 
     /**
@@ -128,8 +127,8 @@ public class MushroomService {
      *
      * @param id идентификатор штамма
      */
-    public void deleteStrain(Long id) {
-            mushroomRepository.deleteById(id);
+    public void deleteMushroom(Long id) {
+        mushroomRepository.deleteById(id);
     }
 
     /**
@@ -140,9 +139,5 @@ public class MushroomService {
     }
 
 
-    public Page<Mushroom> searchArchaea(StrainSearchRequest request) {
-        StrainSearchSpecification<Mushroom> specification = new StrainSearchSpecification<>(request);
-        Pageable pageable = StrainSearchSpecification.getPageable(request.getPage(), request.getSize());
-        return mushroomRepository.findAll(specification, pageable);
-    }
+
 }

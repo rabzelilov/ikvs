@@ -23,16 +23,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Accessors(chain = true)
 @Table(name = "Simplest")
-public class Simplest implements Serializable {
+public class Simplest extends Filter implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -1730538653948604666L;
 
-    /** Идентификатор штамма */
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue
-    private Long id;
 
     @Column(name = "idStrain", nullable = false)
     private Long idStrain;
@@ -73,10 +68,6 @@ public class Simplest implements Serializable {
     @Column(name = "asceticism")
     private String asceticism;
 
-    /** Род */
-    @Column(name = "genus")
-    private String genus;
-
     /** Типовой/нетиповой штамм */
     @Column(name = "isTypical")
     private boolean isTypical;
@@ -92,14 +83,6 @@ public class Simplest implements Serializable {
     /** Название штамма */
     @Schema(description = "Название")
     private String name;
-
-    /** Консорциум */
-    @Column(name = "consortium")
-    private Boolean consortium;
-
-    /** Название коллекции */
-    @Column(name = "name_collection")
-    private String nameCollection;
 
     /** Семейство */
     @Column(name = "family")

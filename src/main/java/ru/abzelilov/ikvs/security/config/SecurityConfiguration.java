@@ -38,7 +38,36 @@ public class SecurityConfiguration  {
             "/api/v1/user/bacteria/**",
             "/api/v1/user/bacteria",
             "/api/v1/user/bacteria/byId/{id}",
-            "/api/v1/user/bacteria/filter"
+            "/api/v1/user/bacteria/filter",
+
+            "/api/v1/general/search",
+
+            "/api/v1/user/mushroom/**",
+            "/api/v1/user/mushroom",
+            "/api/v1/user/mushroom/byId/{id}",
+            "/api/v1/user/mushroom/filter",
+
+            "/api/v1/user/seaweed/**",
+            "/api/v1/user/seaweed",
+            "/api/v1/user/seaweed/byId/{id}",
+            "/api/v1/user/seaweed/filter",
+
+            "/api/v1/user/archaea/**",
+            "/api/v1/user/archaea",
+            "/api/v1/user/archaea/byId/{id}",
+            "/api/v1/user/archaea/filter",
+
+            "/api/v1/user/simplest/**",
+            "/api/v1/user/simplest",
+            "/api/v1/user/simplest/byId/{id}",
+            "/api/v1/user/simplest/filter",
+
+            "/api/v1/user/dna/**",
+            "/api/v1/user/dna",
+            "/api/v1/user/dna/byId/{id}",
+            "/api/v1/user/dna/filter",
+
+
     };
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final LogoutHandler logoutHandler;

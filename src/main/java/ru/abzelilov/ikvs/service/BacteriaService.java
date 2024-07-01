@@ -5,17 +5,13 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.abzelilov.ikvs.dto.CardDto;
-import ru.abzelilov.ikvs.dto.CardShortDto;
+import ru.abzelilov.ikvs.dto.BacteriaUpdateDto;
+import ru.abzelilov.ikvs.dto.bacteria.BacteriaDto;
 import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
 import ru.abzelilov.ikvs.filter.common.StrainSearchSpecification;
 import ru.abzelilov.ikvs.mapper.BacteriaMapper;
 import ru.abzelilov.ikvs.model.Bacteria;
-import ru.abzelilov.ikvs.dto.StrainAddDto;
-import ru.abzelilov.ikvs.dto.StrainUpdateDto;
-import ru.abzelilov.ikvs.repository.ArchaeaRepository;
 import ru.abzelilov.ikvs.repository.BacteriaRepository;
-import ru.abzelilov.ikvs.repository.MushroomRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,10 +41,10 @@ public class BacteriaService {
      *
      * @return список всех штаммов
      */
-    public List<CardDto> getAllBacteria() {
+    public List<BacteriaDto> getAllBacteria() {
         return bacteriaRepository.findAll()
                 .stream()
-                .map(bacteriaMapper::toCardDto)
+                .map(bacteriaMapper::toBacteriaDto)
                 .collect(Collectors.toList());
     }
 
@@ -57,72 +53,72 @@ public class BacteriaService {
      *
      * @return список всех штаммов
      */
-    public Optional<CardDto> getBacteriaById(Long id) {
+    public Optional<BacteriaDto> getBacteriaById(Long id) {
         return bacteriaRepository.findById(id)
-                .map(bacteriaMapper::toCardDto);
+                .map(bacteriaMapper::toBacteriaDto);
     }
 
-    
-    /**
-     * Возвращает список штаммов
-     *
-     * @return список всех штаммов
-     */
-    public List<CardShortDto> getAllShortStrains() {
-        List<Bacteria> bacteria = bacteriaRepository.findAll();
-        return bacteria.stream().map(bacteriaMapper::toCardShortDto).collect(Collectors.toList());
-    }
+//
+//    /**
+//     * Возвращает список штаммов
+//     *
+//     * @return список всех штаммов
+//     */
+//    public List<BacteriaDto> getAllShortStrains() {
+//        List<Bacteria> bacteria = bacteriaRepository.findAll();
+//        return bacteria.stream().map(bacteriaMapper::toBacteriaDto).collect(Collectors.toList());
+//    }
 
-    /**
-     * Сохраняет список штаммов (штаммов)
-     *
-     * @param bacteria штамми (штамми) {@link List< Bacteria >}
-     * @return штамми (штамми) {@link List< Bacteria >}
-     */
-    public List<Bacteria> saveStrains(List<Bacteria> bacteria) {
-        return bacteriaRepository.saveAll(bacteria);
-    }
+//    /**
+//     * Сохраняет список штаммов (штаммов)
+//     *
+//     * @param bacteria штамми (штамми) {@link List< Bacteria >}
+//     * @return штамми (штамми) {@link List< Bacteria >}
+//     */
+//    public List<Bacteria> saveStrains(List<Bacteria> bacteria) {
+//        return bacteriaRepository.saveAll(bacteria);
+//    }
 
 
-    /**
-     * Сохраняет штамм в краткой форме
-     *
-     * @param cardShortDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
-     */
-    public CardShortDto saveBacteria(CardShortDto cardShortDto) {
-            Bacteria bacteria = bacteriaMapper.toStrain(cardShortDto);
-            Bacteria savedBacteria = bacteriaRepository.save(bacteria);
-
-        return bacteriaMapper.toCardShortDto(savedBacteria);
-    }
+//    /**
+//     * Сохраняет штамм в краткой форме
+//     *
+//     * @param BacteriaDto транспортный объект {@link BacteriaDto}
+//     * @return транспортный объект {@link BacteriaDto}
+//     */
+//    public BacteriaDto saveBacteria(BacteriaDto BacteriaDto) {
+//        Bacteria bacteria = bacteriaMapper.toBacteria(BacteriaDto);
+//        Bacteria savedBacteria = bacteriaRepository.save(bacteria);
+//
+//        return bacteriaMapper.toBacteriaDto(savedBacteria);
+//    }
 
     /**
      * Сохраняет полный штамм
      *
-     * @param cardDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param BacteriaDto транспортный объект {@link BacteriaDto}
+     * @return транспортный объект {@link BacteriaDto}
      */
-    public CardDto saveBacteria(CardDto cardDto) {
-        Bacteria bacteria = bacteriaMapper.toStrain(cardDto);
+    public BacteriaDto saveBacteria(BacteriaDto BacteriaDto) {
+        Bacteria bacteria = bacteriaMapper.toBacteria(BacteriaDto);
         Bacteria savedBacteria = bacteriaRepository.save(bacteria);
 
-        return bacteriaMapper.toCardDto(savedBacteria);
+        return bacteriaMapper.toBacteriaDto(savedBacteria);
     }
 
     /**
      * Обновляет штамм
      *
-     * @param strainUpdateDto траспортный объект штамма {@link StrainUpdateDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param strainUpdateDto траспортный объект штамма {@link BacteriaUpdateDto}
+     * @return транспортный объект {@link BacteriaDto}
      */
-    public CardDto updateBacteria(StrainUpdateDto strainUpdateDto) {
+    public BacteriaDto updateBacteria(BacteriaUpdateDto strainUpdateDto) {
 
-            log.info(String.format("Update strain with id %s",strainUpdateDto.getId()));
-            Bacteria bacteria = bacteriaMapper.toStrain(strainUpdateDto);
-            Bacteria updatedBacteria = bacteriaRepository.save(bacteria);
+        log.info(String.format("Update strain with id %s", strainUpdateDto.getId()));
+        Bacteria bacteria = bacteriaMapper.toBacteria(strainUpdateDto);
+        Bacteria updatedBacteria = bacteriaRepository.save(bacteria);
 
-        return bacteriaMapper.toCardDto(updatedBacteria);
+        return bacteriaMapper.toBacteriaDto(updatedBacteria);
     }
 
     /**
@@ -131,7 +127,7 @@ public class BacteriaService {
      * @param id идентификатор штамма
      */
     public void deleteBacteria(Long id) {
-            bacteriaRepository.deleteById(id);
+        bacteriaRepository.deleteById(id);
     }
 
     /**

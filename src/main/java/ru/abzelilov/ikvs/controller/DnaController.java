@@ -8,11 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.abzelilov.ikvs.dto.*;
-import ru.abzelilov.ikvs.dto.bacteria.BacteriaDto;
+import ru.abzelilov.ikvs.dto.BacteriaUpdateDto;
+import ru.abzelilov.ikvs.dto.StrainAddDto;
+import ru.abzelilov.ikvs.dto.dna.DnaDto;
+import ru.abzelilov.ikvs.dto.dna.DnaUpdateDto;
 import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
-import ru.abzelilov.ikvs.model.Bacteria;
-import ru.abzelilov.ikvs.service.BacteriaService;
+import ru.abzelilov.ikvs.model.Dna;
+import ru.abzelilov.ikvs.service.DnaService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +22,10 @@ import java.util.Optional;
 @Hidden
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user/bacteria")
-public class BacteriaController {
+@RequestMapping("/api/v1/user/dna")
+public class DnaController {
 
-    private final BacteriaService bacteriaService;
+    private final DnaService dnaService;
 
 
     /**
@@ -34,8 +36,8 @@ public class BacteriaController {
     @CrossOrigin
     @GetMapping
     @Operation(summary = "Получение списка всех штаммов")
-    public ResponseEntity<List<BacteriaDto>> getAllStrains() {
-        return new ResponseEntity<>(bacteriaService.getAllBacteria(), HttpStatus.OK);
+    public ResponseEntity<List<DnaDto>> getAllStrains() {
+        return new ResponseEntity<>(dnaService.getAllDna(), HttpStatus.OK);
     }
 
     /**
@@ -46,43 +48,58 @@ public class BacteriaController {
     @CrossOrigin
     @GetMapping("/byId/{id}")
     @Operation(summary = "Получение списка всех штаммов")
-    public ResponseEntity<Optional<BacteriaDto>> getStrainById(@PathVariable Long id) {
-        return new ResponseEntity<>(bacteriaService.getBacteriaById(id), HttpStatus.OK);
+    public ResponseEntity<Optional<DnaDto>> getStrainById(@PathVariable Long id) {
+        return new ResponseEntity<>(dnaService.getDnaById(id), HttpStatus.OK);
     }
 
 
     @PostMapping(value = "/search")
-    public Page<Bacteria> search(@RequestBody StrainSearchRequest request) {
-        return bacteriaService.searchBacteria(request);
+    public Page<Dna> search(@RequestBody StrainSearchRequest request) {
+        return dnaService.searchDna(request);
     }
+
+    //    /**
+//     * Сохраняет штамм
+//     *
+//     * @param strainAddDto траспортный объект {@link StrainAddDto}
+//     * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
+//     */
+//    @PostMapping
+//    @Operation(summary = "Создание штамма")
+//    @PreAuthorize("hasAuthority('admin:create')")
+//    @CrossOrigin
+//    public ResponseEntity<CardShortDto> saveStrain(@RequestBody StrainAddDto strainAddDto) {
+//        return new ResponseEntity<>(
+//                dnaService.saveDna(strainAddDto), HttpStatus.OK);
+//    }
 
     /**
      * Сохраняет штамм
      *
-     * @param bacteriaDto траспортный объект {@link StrainAddDto}
+     * @param dnaDto траспортный объект {@link StrainAddDto}
      * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
      */
-    @PostMapping("/saveBacteria")
+    @PostMapping("/saveDna")
     @Operation(summary = "Создание штамма")
     @PreAuthorize("hasAuthority('admin:create')")
     @CrossOrigin
-    public ResponseEntity<BacteriaDto> saveStrain(@RequestBody BacteriaDto bacteriaDto) {
+    public ResponseEntity<DnaDto> saveStrain(@RequestBody DnaDto dnaDto) {
         return new ResponseEntity<>(
-                bacteriaService.saveBacteria(bacteriaDto), HttpStatus.OK);
+                dnaService.saveDna(dnaDto), HttpStatus.OK);
     }
 
     /**
      * Обновляет штамм
      *
-     * @param bacteriaUpdateDto траспортный объект {@link BacteriaUpdateDto}
+     * @param dnaUpdateDto траспортный объект {@link BacteriaUpdateDto}
      * @return ответ на запрос, в случае успешного ответа, метод возвращает штамм и НТТР 200 OK
      */
-    @PutMapping("/updateBacteria")
+    @PutMapping("/updateDna")
     @Operation(summary = "Редактирование штамма")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<BacteriaDto> updateStrain(@RequestBody BacteriaUpdateDto bacteriaUpdateDto) {
+    public ResponseEntity<DnaDto> updateStrain(@RequestBody DnaUpdateDto dnaUpdateDto) {
         return new ResponseEntity<>(
-                bacteriaService.updateBacteria(bacteriaUpdateDto), HttpStatus.OK);
+                dnaService.updateDna(dnaUpdateDto), HttpStatus.OK);
     }
 
     /**
@@ -91,10 +108,12 @@ public class BacteriaController {
      *
      * @param id идентификатор штамма
      */
-    @DeleteMapping(value = "deleteBacteria/{id}")
+    @DeleteMapping(value = "deleteDna/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasAuthority('admin:delete')")
     public void deleteStrain(@PathVariable("id") Long id) {
-        bacteriaService.deleteBacteria(id);
+        dnaService.deleteDna(id);
     }
+    
+    
 }

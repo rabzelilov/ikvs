@@ -23,16 +23,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Accessors(chain = true)
 @Table(name = "Dna")
-public class Dna implements Serializable {
+public class Dna extends Filter implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -1730538653948604633L;
-
-    /** Идентификатор штамма */
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue
-    private Long id;
 
     @Column(name = "idStrain", nullable = false)
     private Long idStrain;
@@ -60,10 +54,6 @@ public class Dna implements Serializable {
     /** Название штамма */
     @Schema(description = "Название")
     private String name;
-
-    /** Название коллекции */
-    @Column(name = "name_collection")
-    private String nameCollection;
 
     /** Фила */
     @Column(name = "fila")

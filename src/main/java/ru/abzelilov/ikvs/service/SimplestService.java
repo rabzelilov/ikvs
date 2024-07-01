@@ -5,10 +5,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.abzelilov.ikvs.dto.CardDto;
-import ru.abzelilov.ikvs.dto.CardShortDto;
 import ru.abzelilov.ikvs.dto.StrainAddDto;
-import ru.abzelilov.ikvs.dto.StrainUpdateDto;
+import ru.abzelilov.ikvs.dto.simplest.SimplestDto;
+import ru.abzelilov.ikvs.dto.simplest.SimplestUpdateDto;
 import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
 import ru.abzelilov.ikvs.filter.common.StrainSearchSpecification;
 import ru.abzelilov.ikvs.mapper.SimplestMapper;
@@ -43,10 +42,10 @@ public class SimplestService {
      *
      * @return список всех штаммов
      */
-    public List<CardDto> getAllStrains() {
+    public List<SimplestDto> getAllSimplest() {
         return simplestRepository.findAll()
                 .stream()
-                .map(simplestMapper::toCardDto)
+                .map(simplestMapper::toSimplestDto)
                 .collect(Collectors.toList());
     }
 
@@ -55,9 +54,9 @@ public class SimplestService {
      *
      * @return список всех штаммов
      */
-    public Optional<CardDto> getStrainById(Long id) {
+    public Optional<SimplestDto> getSimplestById(Long id) {
         return simplestRepository.findById(id)
-                .map(simplestMapper::toCardDto);
+                .map(simplestMapper::toSimplestDto);
     }
 
     
@@ -66,61 +65,61 @@ public class SimplestService {
      *
      * @return список всех штаммов
      */
-    public List<CardShortDto> getAllShortStrains() {
+    public List<SimplestDto> getAllShortStrains() {
         List<Simplest> archaea = simplestRepository.findAll();
-        return archaea.stream().map(simplestMapper::toCardShortDto).collect(Collectors.toList());
+        return archaea.stream().map(simplestMapper::toSimplestDto).collect(Collectors.toList());
     }
 
     /**
      * Сохраняет список штаммов (штаммов)
      *
-     * @param archaea штамми (штамми) {@link List< Simplest >}
-     * @return штамми (штамми) {@link List< Simplest >}
+     * @param archaea штамми (штамми) {@link List<Simplest>}
+     * @return штамми (штамми) {@link List<Simplest>}
      */
     public List<Simplest> saveStrains(List<Simplest> archaea) {
         return simplestRepository.saveAll(archaea);
     }
 
 
-    /**
-     * Сохраняет штамм в краткой форме
-     *
-     * @param cardShortDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
-     */
-    public CardShortDto saveStrain(CardShortDto cardShortDto) {
-            Simplest archaea = simplestMapper.toSimplest(cardShortDto);
-            Simplest savedBacteria = simplestRepository.save(archaea);
-
-        return simplestMapper.toCardShortDto(savedBacteria);
-    }
+//    /**
+//     * Сохраняет штамм в краткой форме
+//     *
+//     * @param SimplestDto транспортный объект {@link StrainAddDto}
+//     * @return транспортный объект {@link SimplestDto}
+//     */
+//    public SimplestDto saveSimplest(SimplestDto SimplestDto) {
+//            Simplest archaea = simplestMapper.toSimplest(SimplestDto);
+//            Simplest savedBacteria = simplestRepository.save(archaea);
+//
+//        return simplestMapper.toSimplestDto(savedBacteria);
+//    }
 
     /**
      * Сохраняет полный штамм
      *
-     * @param cardDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param SimplestDto транспортный объект {@link StrainAddDto}
+     * @return транспортный объект {@link SimplestDto}
      */
-    public CardDto saveStrain(CardDto cardDto) {
-        Simplest archaea = simplestMapper.toSimplest(cardDto);
+    public SimplestDto saveSimplest(SimplestDto SimplestDto) {
+        Simplest archaea = simplestMapper.toSimplest(SimplestDto);
         Simplest savedBacteria = simplestRepository.save(archaea);
 
-        return simplestMapper.toCardDto(savedBacteria);
+        return simplestMapper.toSimplestDto(savedBacteria);
     }
 
     /**
      * Обновляет штамм
      *
-     * @param strainUpdateDto траспортный объект штамма {@link StrainUpdateDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param simplestUpdateDto траспортный объект штамма {@link SimplestUpdateDto}
+     * @return транспортный объект {@link SimplestDto}
      */
-    public CardDto updateStrain(StrainUpdateDto strainUpdateDto) {
+    public SimplestDto updateSimplest(SimplestUpdateDto simplestUpdateDto) {
 
-            log.info(String.format("Update strain with id %s",strainUpdateDto.getId()));
-            Simplest archaea = simplestMapper.toSimplest(strainUpdateDto);
+            log.info(String.format("Update strain with id %s", simplestUpdateDto.getId()));
+            Simplest archaea = simplestMapper.toSimplest(simplestUpdateDto);
             Simplest updatedBacteria = simplestRepository.save(archaea);
 
-        return simplestMapper.toCardDto(updatedBacteria);
+        return simplestMapper.toSimplestDto(updatedBacteria);
     }
 
     /**
@@ -128,7 +127,7 @@ public class SimplestService {
      *
      * @param id идентификатор штамма
      */
-    public void deleteStrain(Long id) {
+    public void deleteSimplest(Long id) {
             simplestRepository.deleteById(id);
     }
 
@@ -140,7 +139,7 @@ public class SimplestService {
     }
 
 
-    public Page<Simplest> searchArchaea(StrainSearchRequest request) {
+    public Page<Simplest> searchSimplest(StrainSearchRequest request) {
         StrainSearchSpecification<Simplest> specification = new StrainSearchSpecification<>(request);
         Pageable pageable = StrainSearchSpecification.getPageable(request.getPage(), request.getSize());
         return simplestRepository.findAll(specification, pageable);

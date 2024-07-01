@@ -5,13 +5,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.abzelilov.ikvs.dto.CardDto;
-import ru.abzelilov.ikvs.dto.CardShortDto;
-import ru.abzelilov.ikvs.dto.StrainAddDto;
-import ru.abzelilov.ikvs.dto.StrainUpdateDto;
+import ru.abzelilov.ikvs.dto.dna.DnaDto;
+import ru.abzelilov.ikvs.dto.dna.DnaUpdateDto;
 import ru.abzelilov.ikvs.filter.common.StrainSearchRequest;
 import ru.abzelilov.ikvs.filter.common.StrainSearchSpecification;
-import ru.abzelilov.ikvs.mapper.ArchaeaMapper;
 import ru.abzelilov.ikvs.mapper.DnaMapper;
 import ru.abzelilov.ikvs.model.Dna;
 import ru.abzelilov.ikvs.repository.DnaRepository;
@@ -44,10 +41,10 @@ public class DnaService {
      *
      * @return список всех штаммов
      */
-    public List<CardDto> getAllStrains() {
+    public List<DnaDto> getAllDna() {
         return dnaRepository.findAll()
                 .stream()
-                .map(dnaMapper::toCardDto)
+                .map(dnaMapper::toDnaDto)
                 .collect(Collectors.toList());
     }
 
@@ -56,9 +53,9 @@ public class DnaService {
      *
      * @return список всех штаммов
      */
-    public Optional<CardDto> getStrainById(Long id) {
+    public Optional<DnaDto> getDnaById(Long id) {
         return dnaRepository.findById(id)
-                .map(dnaMapper::toCardDto);
+                .map(dnaMapper::toDnaDto);
     }
 
     
@@ -67,9 +64,9 @@ public class DnaService {
      *
      * @return список всех штаммов
      */
-    public List<CardShortDto> getAllShortStrains() {
+    public List<DnaDto> getAllShortDnas() {
         List<Dna> dna = dnaRepository.findAll();
-        return dna.stream().map(dnaMapper::toCardShortDto).collect(Collectors.toList());
+        return dna.stream().map(dnaMapper::toDnaDto).collect(Collectors.toList());
     }
 
     /**
@@ -78,7 +75,7 @@ public class DnaService {
      * @param dna штамми (штамми) {@link List<Dna>}
      * @return штамми (штамми) {@link List<Dna>}
      */
-    public List<Dna> saveStrains(List<Dna> dna) {
+    public List<Dna> saveDnas(List<Dna> dna) {
         return dnaRepository.saveAll(dna);
     }
 
@@ -86,42 +83,42 @@ public class DnaService {
     /**
      * Сохраняет штамм в краткой форме
      *
-     * @param cardShortDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param DnaDto транспортный объект {@link DnaDto}
+     * @return транспортный объект {@link DnaDto}
      */
-    public CardShortDto saveStrain(CardShortDto cardShortDto) {
-            Dna dna = dnaMapper.toDna(cardShortDto);
-            Dna savedBacteria = dnaRepository.save(dna);
+    public DnaDto saveDna(DnaDto DnaDto) {
+            Dna dna = dnaMapper.toDna(DnaDto);
+            Dna savedDna = dnaRepository.save(dna);
 
-        return dnaMapper.toCardShortDto(savedBacteria);
+        return dnaMapper.toDnaDto(savedDna);
     }
 
-    /**
-     * Сохраняет полный штамм
-     *
-     * @param cardDto транспортный объект {@link StrainAddDto}
-     * @return транспортный объект {@link CardShortDto}
-     */
-    public CardDto saveStrain(CardDto cardDto) {
-        Dna dna = dnaMapper.toDna(cardDto);
-        Dna savedBacteria = dnaRepository.save(dna);
-
-        return dnaMapper.toCardDto(savedBacteria);
-    }
+//    /**
+//     * Сохраняет полный штамм
+//     *
+//     * @param DnaDto транспортный объект {@link StrainAddDto}
+//     * @return транспортный объект {@link DnaDto}
+//     */
+//    public DnaDto saveDna(DnaDto DnaDto) {
+//        Dna dna = dnaMapper.toDna(DnaDto);
+//        Dna savedBacteria = dnaRepository.save(dna);
+//
+//        return dnaMapper.toDnaDto(savedBacteria);
+//    }
 
     /**
      * Обновляет штамм
      *
-     * @param strainUpdateDto траспортный объект штамма {@link StrainUpdateDto}
-     * @return транспортный объект {@link CardShortDto}
+     * @param dnaUpdateDto траспортный объект штамма {@link DnaUpdateDto}
+     * @return транспортный объект {@link DnaDto}
      */
-    public CardDto updateStrain(StrainUpdateDto strainUpdateDto) {
+    public DnaDto updateDna(DnaUpdateDto dnaUpdateDto) {
 
-            log.info(String.format("Update strain with id %s",strainUpdateDto.getId()));
-            Dna dna = dnaMapper.toDna(strainUpdateDto);
+            log.info(String.format("Update Dna with id %s", dnaUpdateDto.getId()));
+            Dna dna = dnaMapper.toDna(dnaUpdateDto);
             Dna updatedBacteria = dnaRepository.save(dna);
 
-        return dnaMapper.toCardDto(updatedBacteria);
+        return dnaMapper.toDnaDto(updatedBacteria);
     }
 
     /**
@@ -129,19 +126,19 @@ public class DnaService {
      *
      * @param id идентификатор штамма
      */
-    public void deleteStrain(Long id) {
+    public void deleteDna(Long id) {
             dnaRepository.deleteById(id);
     }
 
     /**
      * Удаляет все штаммы
      */
-    public void deleteAllStrains() {
+    public void deleteAllDnas() {
         dnaRepository.deleteAll();
     }
 
 
-    public Page<Dna> searchArchaea(StrainSearchRequest request) {
+    public Page<Dna> searchDna(StrainSearchRequest request) {
         StrainSearchSpecification<Dna> specification = new StrainSearchSpecification<>(request);
         Pageable pageable = StrainSearchSpecification.getPageable(request.getPage(), request.getSize());
         return dnaRepository.findAll(specification, pageable);
