@@ -20,7 +20,8 @@ import java.util.Optional;
 @Hidden
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user/bacteria")
+@RequestMapping("/api/v1/bacteria")
+@CrossOrigin
 public class BacteriaController {
 
     private final BacteriaService bacteriaService;

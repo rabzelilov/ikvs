@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/v1/admin")
 public class AdminController {
 

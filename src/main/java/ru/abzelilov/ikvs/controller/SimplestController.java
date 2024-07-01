@@ -24,7 +24,7 @@ import java.util.Optional;
 @Hidden
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user/simplest")
+@RequestMapping("/api/v1/simplest")
 public class SimplestController {
 
     private final SimplestService simplestService;

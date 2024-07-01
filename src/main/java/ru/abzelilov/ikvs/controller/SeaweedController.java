@@ -23,7 +23,7 @@ import java.util.Optional;
 @Hidden
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user/seaweed")
+@RequestMapping("/api/v1/seaweed")
 public class SeaweedController {
 
     private final SeaweedService seaweedService;

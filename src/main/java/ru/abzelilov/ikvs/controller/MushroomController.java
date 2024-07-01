@@ -18,7 +18,7 @@ import java.util.Optional;
 @Hidden
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user/mushroom")
+@RequestMapping("/api/v1/mushroom")
 public class MushroomController {
 
     private final MushroomService mushroomService;

@@ -22,7 +22,7 @@ import java.util.Optional;
 @Hidden
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user/dna")
+@RequestMapping("/api/v1/dna")
 public class DnaController {
 
     private final DnaService dnaService;
